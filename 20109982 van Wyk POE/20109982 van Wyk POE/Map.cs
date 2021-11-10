@@ -43,13 +43,13 @@ namespace _20109982_van_Wyk_POE
             enemyArray = new Enemy[numOfEnemies];
 
             //Q.3.2 | The constructor calls Create() to create the Hero
-            Create();
+            Create(Tile.TileType.HERO);
 
             //Q.3.2 | loops through the enemy’s array calling Create() to create each enemy and puts
             //them in the Tile map
             foreach (var enemy in enemyArray)
             {
-                Create();
+                Create(Tile.TileType.ENEMY);
             }
 
             //Q.3.2 | It then calls UpdateVision() which updates the vision
@@ -82,17 +82,27 @@ namespace _20109982_van_Wyk_POE
             //It then generates a unique X and Y position
             int xPos = rng.Next(mapWidth);
             int yPos = rng.Next(mapHeight);
+            int heroXPos = xPos;
+            int heroYPos = yPos;
 
             int numOfEnemies = 0;
 
             switch (type)
             {
                 case Tile.TileType.HERO:
-                    mapArray[xPos, yPos] = myHero;
+                    //mapArray[xPos, yPos] = myHero;
+                    myHero = new Hero(xPos, yPos, 100);
+                    return myHero;
                     break;
                 case Tile.TileType.ENEMY:
-                    mapArray[xPos, yPos] = enemyArray[numOfEnemies];
-                    numOfEnemies++;
+                    //mapArray[xPos, yPos] = enemyArray[numOfEnemies];
+                    //numOfEnemies++;
+                    while (xPos == heroXPos && yPos == heroYPos)
+                    {
+                         xPos = rng.Next(mapWidth);
+                         yPos = rng.Next(mapHeight);
+                    }
+                    return mapArray[xPos, yPos] = new Goblin(xPos, yPos);
                     break;
                 case Tile.TileType.GOLD:
                     break;
@@ -101,6 +111,7 @@ namespace _20109982_van_Wyk_POE
                 default:
                     break;
             }
+            return null;
         }
     }
 }
